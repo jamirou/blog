@@ -1,0 +1,857 @@
+:root {
+    --bg-void: #050505;
+    --bg-deep: #0a0a12;
+    --color-gold: #c5b358;
+    --color-gold-dim: #8a7d3b;
+    --color-purple: #bd93f9;
+    --color-purple-dim: #7d5bb2;
+    --text-main: #e0e0e0;
+    --text-dim: #a0a0a0;
+
+    --font-gothic: 'UnifrakturMaguntia', 'Pirata One', cursive;
+    --font-tech: 'Fira Code', 'Space Mono', monospace;
+
+    --glass-bg: rgba(20, 20, 20, 0.6);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(10px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-void);
+    background-image: url('assets/dungeonwallpaper.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    color: var(--text-main);
+    font-family: var(--font-tech);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.dungeon-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 5, 10, 0.85);
+    /* Dark overlay to make text pop */
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* --- Star Background Animation - REMOVED --- */
+/*
+.stars, .stars2, .stars3 { ... }
+*/
+
+/* --- Typography --- */
+h1,
+h2,
+h3 {
+    font-family: var(--font-gothic);
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+h1.main-title {
+    font-size: 4rem;
+    color: var(--text-main);
+    text-shadow: 0 0 10px rgba(197, 179, 88, 0.3);
+    /* Subtle Gold Glow */
+    margin-bottom: 0.5rem;
+}
+
+p.subtitle {
+    font-family: var(--font-tech);
+    color: var(--color-gold);
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+/* --- DRAMATIC SCROLL MODAL --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    display: none;
+    /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.modal-overlay.open {
+    display: flex;
+    opacity: 1;
+}
+
+.scroll-paper {
+    width: 90%;
+    max-width: 800px;
+    height: 0;
+    /* Starts rolled up */
+    background: linear-gradient(135deg, #1a1a20 0%, #0d0d12 100%);
+    border: 2px solid var(--color-gold);
+    box-shadow: 0 0 50px rgba(197, 179, 88, 0.2),
+        inset 0 0 100px rgba(0, 0, 0, 0.8);
+    position: relative;
+    overflow: hidden;
+    padding: 3rem;
+    color: #e0e0e0;
+    border-radius: 4px;
+
+    /* Decoration: Gold Corners */
+    border-image: linear-gradient(to bottom, var(--color-gold), transparent, var(--color-gold)) 1 100%;
+}
+
+.modal-overlay.open .scroll-paper {
+    animation: unrollScroll 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.scroll-inner-content {
+    opacity: 0;
+    transform: translateY(20px);
+    height: 100%;
+    overflow-y: auto;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gold) transparent;
+}
+
+.modal-overlay.open .scroll-inner-content {
+    animation: fadeInContent 0.8s ease forwards;
+    animation-delay: 1s;
+    /* Wait for unroll */
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: transparent;
+    border: 1px solid var(--color-purple);
+    color: var(--color-purple);
+    font-family: var(--font-tech);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.close-btn:hover {
+    background: var(--color-purple);
+    color: #000;
+    box-shadow: 0 0 15px var(--color-purple);
+}
+
+#modal-title {
+    font-family: var(--font-gothic);
+    font-size: 2.5rem;
+    color: var(--color-gold);
+    border-bottom: 1px solid rgba(197, 179, 88, 0.3);
+    padding-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(197, 179, 88, 0.4);
+}
+
+.modal-meta {
+    font-family: var(--font-tech);
+    color: var(--color-purple);
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+#modal-body {
+    font-family: 'Times New Roman', serif;
+    /* Classic readable font for body */
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #dcdcdc;
+}
+
+#modal-body p {
+    margin-bottom: 1.5rem;
+}
+
+#modal-body h3 {
+    color: var(--color-gold);
+    font-family: var(--font-gothic);
+    margin-top: 2rem;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes unrollScroll {
+    0% {
+        height: 0;
+        opacity: 0;
+        transform: scaleY(0.1);
+    }
+
+    100% {
+        height: 80vh;
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+@keyframes fadeInContent {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Layout --- */
+.hero-section {
+    padding: 6rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.main-nav {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    color: var(--text-dim);
+    font-family: var(--font-tech);
+    font-size: 1rem;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--color-purple);
+    text-shadow: 0 0 8px var(--color-purple-dim);
+}
+
+.nav-link::before {
+    content: '>';
+    position: absolute;
+    left: -15px;
+    opacity: 0;
+    color: var(--color-gold);
+    transition: opacity 0.3s;
+}
+
+.nav-link:hover::before {
+    opacity: 1;
+}
+
+
+/* --- Grid & Cards --- */
+.dungeon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    flex: 1;
+    /* Push footer down */
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Ancient Stone/Pergamino Card Style --- */
+/* --- Ancient Stone/Pergamino Card Style --- */
+.post-card {
+    /* Reverting to Dark Glassmorphism as requested */
+    background: rgba(10, 10, 15, 0.7);
+    /* Deep dark base */
+    backdrop-filter: blur(12px);
+    /* Strong blur */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-image: none;
+    /* Remove texture */
+
+    padding: 2rem;
+    border-radius: 4px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    /* Deep shadow */
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-purple);
+    box-shadow: 0 0 20px rgba(189, 147, 249, 0.2);
+    background: rgba(15, 15, 20, 0.8);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--color-gold-dim);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 0.5rem;
+}
+
+.post-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.post-excerpt {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.read-more-btn {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-gold);
+    color: var(--color-gold);
+    font-family: var(--font-tech);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.read-more-btn:hover {
+    background: rgba(197, 179, 88, 0.1);
+    box-shadow: 0 0 10px rgba(197, 179, 88, 0.2);
+    color: #fff;
+    border-color: #fff;
+}
+
+/* --- Avatar Assets Integration --- */
+.avatar-container {
+    margin-bottom: 2rem;
+    animation: floatAvatar 6s ease-in-out infinite;
+}
+
+.avatar-img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--color-gold);
+    box-shadow: 0 0 25px rgba(197, 179, 88, 0.4),
+        0 0 10px rgba(189, 147, 249, 0.2);
+    transition: transform 1s ease, box-shadow 0.5s ease;
+}
+
+.avatar-img:hover {
+    transform: scale(1.05) rotate(2deg);
+    border-color: var(--color-purple);
+    box-shadow: 0 0 35px rgba(189, 147, 249, 0.5),
+        0 0 15px rgba(197, 179, 88, 0.3);
+}
+
+/* --- Avatar Coin Flip Interaction --- */
+.avatar-img.avatar-coin-flip {
+    animation: coinFlip 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-color: var(--color-gold);
+    box-shadow: 0 0 50px rgba(197, 179, 88, 0.6);
+}
+
+@keyframes coinFlip {
+    0% {
+        transform: rotateX(0deg) scale(1.05);
+        /* Start from hover-ish state */
+    }
+
+    100% {
+        transform: rotateX(360deg) scale(1.05);
+        /* End flip */
+    }
+}
+
+@keyframes floatAvatar {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* --- Dragon Asset - REMOVED --- */
+/*
+.dragon-container { ... }
+.dragon-img { ... }
+*/
+
+
+/* --- Footer --- */
+.main-footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    position: relative;
+    z-index: 10;
+}
+
+/* --- Scroll Modal Images --- */
+#modal-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--color-gold);
+    margin: 1.5rem 0;
+    transition: transform 0.3s ease;
+}
+
+#modal-body img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(197, 179, 88, 0.3);
+}
+
+.scroll-img-container {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.scroll-caption {
+    display: block;
+    text-align: center;
+    font-family: var(--font-tech);
+    font-size: 0.85rem;
+    color: var(--color-purple);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.img-float-left {
+    float: left;
+    margin-right: 1.5rem;
+    margin-bottom: 0.5rem;
+    max-width: 40%;
+}
+
+.img-float-right {
+    float: right;
+    margin-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    max-width: 40%;
+}
+
+@media (max-width: 768px) {
+
+    .img-float-left,
+    .img-float-right {
+        float: none;
+        max-width: 100%;
+        margin: 1rem 0;
+    }
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Enhanced Terminal Footer --- */
+.terminal-footer {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    /* Reverted to smaller size */
+    color: var(--text-dim);
+    /* Reverted color */
+    background: transparent;
+    /* Reverted bg */
+    padding: 0;
+    border: none;
+    display: block;
+    /* Reverted display */
+    margin-top: 2rem;
+    box-shadow: none;
+}
+
+.prompt {
+    color: var(--color-purple);
+    /* Thematic Purple */
+    font-weight: bold;
+}
+
+.typing-effect {
+    border-right: 10px solid var(--text-main);
+    /* Block cursor */
+    animation: blinkCursor 1s steps(1) infinite;
+    padding-right: 5px;
+}
+
+@keyframes blinkCursor {
+    50% {
+        border-color: transparent;
+    }
+}
+
+.comment {
+    color: #6272a4;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Social icons big update - Reverted size */
+.social-icon {
+    font-size: 0.9rem;
+    /* Reverted to smaller size */
+    padding: 0;
+    border: none;
+    transition: all 0.3s ease;
+    color: var(--text-dim);
+}
+
+.social-icon:hover {
+    background: transparent;
+    color: var(--color-gold);
+    border-color: transparent;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    h1.main-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-section {
+        padding: 4rem 1rem 2rem;
+    }
+
+    .dungeon-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Adjust dragon for mobile so it doesn't cover text */
+    .dragon-container {
+        opacity: 0.3;
+        width: 100vw;
+        right: -20%;
+        bottom: 0;
+    }
+}
+
+/* --- Origin Story Section --- */
+.origin-story {
+    max-width: 800px;
+    margin: 4rem auto 2rem;
+    padding: 0 2rem;
+    color: var(--text-dim);
+    position: relative;
+    z-index: 5;
+}
+
+.story-content {
+    background: rgba(10, 10, 15, 0.4);
+    border-left: 1px solid var(--color-gold-dim);
+    padding: 2rem;
+    position: relative;
+}
+
+.story-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-gold-dim), transparent);
+    opacity: 0.5;
+}
+
+.story-title {
+    font-size: 2.5rem;
+    color: var(--color-gold);
+    margin-bottom: 2rem;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(197, 179, 88, 0.2);
+}
+
+.story-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    text-align: justify;
+    font-family: var(--font-gothic);
+    font-family: 'Space Mono', monospace;
+}
+
+.final-verse {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.quote {
+    font-family: var(--font-gothic);
+    font-size: 1.5rem;
+    color: var(--color-purple);
+    display: block;
+    margin-top: 1rem;
+}
+
+/* --- Spotify Bard Button --- */
+.audio-player-container {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 10;
+}
+
+.spotify-bard-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    /* Smaller padding */
+    background: rgba(0, 0, 0, 0.6);
+    /* Dark background */
+    border: 1px solid var(--color-gold);
+    /* Gold border */
+    color: var(--color-gold);
+    /* Gold text */
+    font-family: var(--font-gothic);
+    font-size: 1.1rem;
+    /* Slightly smaller font */
+    text-decoration: none;
+    border-radius: 4px;
+    /* Less rounded, more like a rune/button */
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px rgba(197, 179, 88, 0.2);
+    transition: all 0.3s ease;
+}
+
+.spotify-bard-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(189, 147, 249, 0.4);
+    /* Purple glow on hover */
+    color: var(--color-purple);
+    border-color: var(--color-purple);
+    background: rgba(20, 20, 20, 0.9);
+}
+
+/* --- Story Images & Collages --- */
+.story-img {
+    border-radius: 2px;
+    border: 1px solid rgba(197, 179, 88, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: sepia(30%) contrast(110%);
+    /* Antique feel */
+}
+
+.story-img:hover {
+    filter: sepia(0%) contrast(100%);
+    transform: scale(1.02);
+    border-color: var(--color-purple);
+}
+
+.story-collage-1 {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+/* Reinforce layout constraints to prevent overflow */
+body,
+html {
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
+/* Specific Image Sizes - Responsive Fixes */
+.img-small {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+}
+
+.img-medium {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+}
+
+.img-large {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: cover;
+}
+
+.img-hero {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border: 2px solid var(--color-gold);
+}
+
+.img-final-1,
+.img-final-2 {
+    width: 45%;
+    max-width: 250px;
+    height: auto;
+}
+
+/* Ensure images don't overflow their containers */
+.story-collage-1,
+.story-collage-3,
+.story-collage-final {
+    max-width: 100%;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.story-collage-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+    /* responsive wrapping */
+    height: auto;
+    /* Remove fixed height */
+    overflow: hidden;
+    /* safety */
+}
+
+.story-collage-2 .img-large {
+    width: 60%;
+    max-width: 350px;
+    /* Limit max width */
+    height: auto;
+    object-fit: cover;
+    transform: none;
+    /* Remove rotation */
+    border: 1px solid rgba(197, 179, 88, 0.2);
+}
+
+.story-collage-2 .overlay {
+    position: static;
+    /* Remove absolute positioning */
+    width: 35%;
+    max-width: 200px;
+    height: auto;
+    transform: none;
+    /* Remove rotation */
+    margin-left: -2rem;
+    /* Slight overlap for style, but controlled */
+    z-index: 2;
+    border: 1px solid var(--color-purple);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* On mobile, stack them nicely */
+@media (max-width: 600px) {
+    .story-collage-2 {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .story-collage-2 .img-large,
+    .story-collage-2 .overlay {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* Hidden Content Toggle */
+.hidden-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.hidden-content.visible {
+    display: block;
+    animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.read-more-story-btn {
+    display: block;
+    margin: 2rem auto;
+    background: transparent;
+    border: 1px solid var(--color-purple);
+    color: var(--color-purple);
+    padding: 0.8rem 1.5rem;
+    font-family: var(--font-tech);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.read-more-story-btn:hover {
+    background: rgba(189, 147, 249, 0.1);
+    box-shadow: 0 0 15px rgba(189, 147, 249, 0.3);
+    text-shadow: 0 0 5px var(--color-purple);
+}
+
+.divider-rune {
+    text-align: center;
+    color: var(--color-gold);
+    font-size: 1.5rem;
+    margin-top: 3rem;
+    opacity: 0.6;
+}
+
+/* Adjust grid margin to accommodate story */
+.dungeon-grid {
+    margin-top: 2rem;
+}

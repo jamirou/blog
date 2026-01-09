@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Calabozo de Jamir | Bitácora digital</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=Pirata+One&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Stars removed for Dungeon Wallpaper -->
+    <div class="dungeon-bg-overlay"></div>
+
+    <header class="hero-section">
+        <div class="avatar-container">
+            <img src="assets/jamirlogo.jpeg" alt="Avatar de Jamir" class="avatar-img">
+        </div>
+        <h1 class="site-title">El Calabozo de Jamir</h1>
+        <p class="site-subtitle">Bitacora de un Paladin Digital</p>
+
+        <div class="audio-player-container" style="margin-top: 1.5rem;">
+            <a href="https://open.spotify.com/playlist/37i9dQZF1DWWHQM5xd8s64" target="_blank" class="spotify-bard-btn">
+                🎶 Playlist de Taberna 🎶
+            </a>
+        </div>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#" class="nav-link" data-filter="all">[ ./Todo.sh ]</a></li>
+                <li><a href="#cronicas" class="nav-link" data-filter="cronicas">[ ./Crónicas.sh ]</a></li>
+                <li><a href="#grimorio" class="nav-link" data-filter="grimorio">[ ~/Grimorio ]</a></li>
+                <li><a href="#taberna" class="nav-link" data-filter="taberna">[ ./Taberna.sh ]</a></li>
+                <li><a href="#cartas" class="nav-link" data-filter="cartas">[ ./Cartas.sh ]</a></li>
+                <li><a href="#skills" class="nav-link" data-filter="skills">[ git_Skills ]</a></li>
+                <li><a href="#proyectos" class="nav-link" data-filter="proyectos">[ {Proyectos} ]</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Origin Story moved to 'Génesis del Guerrero' scroll -->
+
+    <main class="dungeon-grid">
+        <!-- Content loaded dynamically from posts.js -->
+    </main>
+
+    <footer class="main-footer">
+        <div class="social-links">
+            <a href="https://github.com/jamirou" target="_blank" class="social-icon">GitHub</a>
+            <a href="https://www.instagram.com/yamir.r.r/" target="_blank" class="social-icon">Instagram</a>
+        </div>
+        <p class="terminal-footer">
+            <span class="prompt">user@calabozo:~$</span> <span class="typing-effect">System.exit(0);</span> <span
+                class="comment">// Hecho con código blanco por Jamir.</span>
+        </p>
+    </footer>
+
+    <!-- Dragon removed -->
+
+    <!-- Dynamic Content -->
+    <div id="scroll-modal" class="modal-overlay">
+        <div class="scroll-paper">
+            <button id="close-modal-btn" class="close-btn">[ X ]</button>
+            <div class="scroll-inner-content">
+                <h2 id="modal-title">Título del Pergamino</h2>
+                <div class="modal-meta">
+                    <span id="modal-date">2025-01-01</span>
+                    <span id="modal-tag">#Tag</span>
+                </div>
+                <div id="modal-body">
+                    <!-- Contenido completo aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="posts.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
