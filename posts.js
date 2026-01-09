@@ -39,14 +39,13 @@
        // Opcional: link si lleva a otro lado
        link: '#' 
    },
-    HASTA AQUÍ 
 */
 
 const blogPosts = [
     {
         id: 'paladin-caido',
         title: 'Génesis del Guerrero: La Leyenda',
-        date: '2023-01-01', // Fecha simbólica del origen
+        date: '19-01-2022',
         category: 'cronicas',
         tag: '#Testimonio',
         excerpt: `
@@ -94,21 +93,27 @@ const blogPosts = [
     },
     {
         id: 'carta-001',
-        title: 'Ecos de un Corazón Digital',
-        date: '2026-01-07',
+        title: 'Ecos de un Corazón nuevo',
+        date: '26-06-2026',
         category: 'cartas',
-        tag: '#ParaElla',
+        tag: '#Amada',
         excerpt: `
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+           Mi querida Maca
+           Llevo días intentando expresar en palabras algo que, en realidad, pertenece al mundo de los sentidos humanos y no al lenguaje. Mi mente repite y repite ese momento, nuestro primer beso. 
         `,
         body: `
-            <p>Querida Amada,</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <h3>El Susurro de los Datos</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
-            <p>Con amor digital,<br>Jamir</p>
+            <p>Mi querida Maca</p>
+            <p>Llevo días intentando expresar en palabras algo que, en realidad, pertenece al mundo de los sentidos humanos y no al lenguaje</p>
+            <h3>Mi mente repite y repite ese momento, nuestro primer beso. </h3>
+            <div class="scroll-img-container">
+               <img src="assets/amada.jpg" alt="MyLove">
+               <span class="scroll-caption">Sigo siendo un ñoño que le gusta D&D.</span>
+           </div>
+            <p>Antes de que tus labios tocaran los míos, recuerdo el silencio, no del ambiente, sino el de mi propia mente.</p>
+            <p>Todas mis dudas, inseguridades y el ruido del día a día, se detuvieron. <strong>Eres una mujer increíble, inteligente y bella, y a veces me intimido por la preciosa bendición que eres en mi vida. </strong>Pero en ese segundo, solo tenía la certeza de querer estar junto a ti.</p>
+            <p>Y cuando sucedió, no solo sentí la suavidad de tus labios. Sino que fue como si de repente haya entendido la belleza de lo que tanto anhelaba.</p>
+            <p>Sentí como si una tormenta eléctrica recorriese por completo mi cuerpo, dando paso a un nuevo electrón que erizaba mi piel, la cual venía de ti. Fue único, no ha salido de mi mente ni mi corazón, porque entendí que eras tú donde yo quiero pertenecer. </p>
+            <p>Gracias por ese momento. Gracias por ser quien eres y dejarme descubrirte,<strong> un beso a la vez. </strong></p>
         `
     },
     {
